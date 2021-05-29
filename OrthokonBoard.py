@@ -16,7 +16,7 @@ class OrthokonBoard:
                        ["Red", "", "", "Yellow"]]
 
         self._current_state = "UNFINISHED"  # One of the three following values: "RED_WON", "YELLOW_WON", or "UNFINISHED"
-        self._debug = False
+        self._debug = True
 
     def _debug_board(self):
         """debugging tool to print the board"""
