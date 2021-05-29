@@ -69,7 +69,7 @@ class OrthokonBoard:
 
     def _check_move(self, x1, y1, x2, y2):
         """ This Method Checks if moves are valid. x1, y1 is the starting position. x2, y2 is the ending position"""
-
+        if self.get_debug(): print(self.get_board(x1,y1), "Is trying to move")
         # Check if a piece is at x1,y1
         if self.get_board(x1, y1) == "":
             if self.get_debug(): print("No piece to move")
