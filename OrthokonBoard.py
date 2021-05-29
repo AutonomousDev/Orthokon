@@ -36,6 +36,7 @@ class OrthokonBoard:
 
     def _set_board(self, x, y, player):
         """Sets a space on the board value"""
+        print("Setting ", x, y, self._board[x][y], "as ", player)
         self._board[x][y] = player
 
     def get_debug(self):
@@ -52,7 +53,7 @@ class OrthokonBoard:
         The rest of the class uses x y coordinates in the traditional order instead of Row Column.
         """
         if self.get_current_state() != "UNFINISHED":
-            return False # Game is over
+            return False  # Game is over
 
         if not self._check_move(x1, y1, x2, y2):
             if self.get_debug(): print("_check move returned false")
@@ -142,21 +143,21 @@ class OrthokonBoard:
 
                     if self.get_board(x, y) != "":  # If another piece is in the way, Return False
                         if self.get_debug(): print("Diagonal move path blocked")
-                        return False # Diagonal move path blocked
+                        return False  # Diagonal move path blocked
         else:
             # Illegal move, isn't horizontal, vertical or diagonal.
             if self.get_debug(): print("Illegal move, isn't horizontal, vertical or diagonal.")
-            return False # Illegal move, isn't horizontal, vertical or diagonal.
+            return False  # Illegal move, isn't horizontal, vertical or diagonal.
 
         if self.get_debug(): print("Passed all _check_move tests")
         return True  # Passed all _check_move tests
 
-    def _record_move(self, x1, y1, y2, x2):
+    def _record_move(self, x1, y1, x2, y2):
         """Record the move on the board"""
         if self.get_debug(): print(self.get_board(x1, y1))
 
         piece_moving = self.get_board(x1, y1)
-        if self.get_debug(): print(" Piece moving is: ", piece_moving)
+        print(" Piece moving is: ", piece_moving)
 
         # Update the board with the new piece positions
         self._set_board(x2, y2, piece_moving)
@@ -214,7 +215,7 @@ class OrthokonBoard:
         for x in range(4):
             for y in range(4):
                 if self.get_board(x, y) != "":  # Blank spaces can't move
-                    player = self.get_board(x, y) # Store the player on the space for this loop cycle
+                    player = self.get_board(x, y)  # Store the player on the space for this loop cycle
 
                     # checking in Clockwise order every direction is checked for possible moves for this space.
                     if self._check_move(x, y, x, y + 1):
@@ -267,8 +268,20 @@ class OrthokonBoard:
             self._set_current_state("RED_WON")
 
 
-# game = OrthokonBoard()
+"""
+Pay no attention to the test code commented out behind the curtain.
+game = OrthokonBoard()
 
-# print(game.make_move(0, 0, 2, 0))
-# print(game.get_current_state())
-# print(game._debug_board())
+print(game.get_current_state())
+print(game._debug_board())
+
+print(game.make_move(3, 0, 1, 0))
+print(game._debug_board())
+print(game.make_move(3, 1, 1, 1))
+print(game._debug_board())
+print(game.make_move(3, 2, 1, 2))
+print(game._debug_board())
+print(game.make_move(3, 3, 1, 3))
+print(game._debug_board())
+print(game.get_current_state())
+"""
