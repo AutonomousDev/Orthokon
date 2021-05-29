@@ -69,7 +69,7 @@ class OrthokonBoard:
 
     def _check_move(self, x1, y1, x2, y2):
         """ This Method Checks if moves are valid. x1, y1 is the starting position. x2, y2 is the ending position"""
-        if self.get_debug(): print(self.get_board(x1,y1), "Is trying to move")
+        if self.get_debug(): print(self.get_board(x1, y1), "Is trying to move")
         # Check if a piece is at x1,y1
         if self.get_board(x1, y1) == "":
             if self.get_debug(): print("No piece to move")
@@ -137,13 +137,16 @@ class OrthokonBoard:
             # Passed diagonal check
 
             # Check for clear path to destination
-            for x in range(x1 + direction_x, x2 + direction_x, direction_x):
-                for y in range(y1 + direction_y, y2 + direction_y, direction_y):
-                    if self.get_debug(): print(x, y, "is", self.get_board(x, y))
+            for delta in range(1, abs(delta_x)):
+                x = (direction_x * delta) + x1
+                y = (direction_y * delta) + y1
 
-                    if self.get_board(x, y) != "":  # If another piece is in the way, Return False
-                        if self.get_debug(): print("Diagonal move path blocked")
-                        return False  # Diagonal move path blocked
+                if self.get_debug(): print(x, y, "is", self.get_board(x, y))
+
+                if self.get_board(x, y) != "":  # If another piece is in the way, Return False
+                    if self.get_debug(): print("Diagonal move path blocked")
+                    return False  # Diagonal move path blocked
+
         else:
             # Illegal move, isn't horizontal, vertical or diagonal.
             if self.get_debug(): print("Illegal move, isn't horizontal, vertical or diagonal.")
