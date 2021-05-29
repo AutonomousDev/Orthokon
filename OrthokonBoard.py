@@ -36,7 +36,7 @@ class OrthokonBoard:
 
     def _set_board(self, x, y, player):
         """Sets a space on the board value"""
-        print("Setting ", x, y, self._board[x][y], "as ", player)
+        if self.get_debug(): print("Setting ", x, y, self._board[x][y], "as ", player)
         self._board[x][y] = player
 
     def get_debug(self):
@@ -157,7 +157,7 @@ class OrthokonBoard:
         if self.get_debug(): print(self.get_board(x1, y1))
 
         piece_moving = self.get_board(x1, y1)
-        print(" Piece moving is: ", piece_moving)
+        if self.get_debug(): print("Piece moving is: ", piece_moving)
 
         # Update the board with the new piece positions
         self._set_board(x2, y2, piece_moving)
@@ -270,12 +270,15 @@ class OrthokonBoard:
 
 """
 Pay no attention to the test code commented out behind the curtain.
+"""
 game = OrthokonBoard()
 
 print(game.get_current_state())
 print(game._debug_board())
 
 print(game.make_move(3, 0, 1, 0))
+
+"""
 print(game._debug_board())
 print(game.make_move(3, 1, 1, 1))
 print(game._debug_board())
