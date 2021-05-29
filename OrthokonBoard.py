@@ -1,6 +1,9 @@
 # Author: Cameron Bowers
 # Date: 05/29/2021
-# Description: *******************************TODO****************************************
+# Description: The class called OrthokonBoard  represents the board for a two-player game that is played on a
+# 4x4 grid. This class does not do everything needed to play a game - it's just responsible for handling the rules
+# concerning the game board. Things like asking the user for moves, printing results for the user, keeping track of
+# whose turn it is, and running the game loop would be the responsibility of one or more other classes.
 
 class OrthokonBoard:
     """Doc string goes here"""
@@ -12,7 +15,7 @@ class OrthokonBoard:
         self._board = [["Red", "", "", "Yellow"], ["Red", "", "", "Yellow"], ["Red", "", "", "Yellow"],
                        ["Red", "", "", "Yellow"]]
 
-        self._current_state = "UNFINISHED"  # one of the three following values: "RED_WON", "YELLOW_WON", or "UNFINISHED"
+        self._current_state = "UNFINISHED"  # One of the three following values: "RED_WON", "YELLOW_WON", or "UNFINISHED"
         self._debug = False
 
     def _debug_board(self):
@@ -39,12 +42,17 @@ class OrthokonBoard:
         # Return debug mode status
         return self._debug
 
-    def make_move(self, x1, y1, x2, y2):
+    def make_move(self, y1, x1, x2, y2):
         """ Method named make_move that takes four parameters - the row and column (in that order) of the piece being
         moved, and the row and column (in that order) of the square it's being moved to. If the game has already been
         won, or if the move is not valid, make_move should just return False. Otherwise, it should record the move,
         update the board and the current state, and return True. To update the current state, you need to detect if
-        this move causes a win for either player. """
+        this move causes a win for either player.
+
+        The rest of the class uses x y coordinates in the traditional order instead of Row Column.
+        """
+        if self.get_current_state() != "UNFINISHED":
+            return False # Game is over
 
         if not self._check_move(x1, y1, x2, y2):
             if self.get_debug(): print("_check move returned false")
@@ -147,11 +155,13 @@ class OrthokonBoard:
         if self.get_debug(): print(self.get_board(x1, y1))
 
         piece_moving = self.get_board(x1, y1)
-        if self.get_debug(): print("142 Piece moving is: ", piece_moving)
+        if self.get_debug(): print(" Piece moving is: ", piece_moving)
+
+        # Update the board with the new piece positions
         self._set_board(x2, y2, piece_moving)
         self._set_board(x1, y1, "")
 
-        # Surrounding pieces are turned to the moving pieces color.
+        # Surrounding pieces are turned to the moving pieces color if they aren't blank.
         if x2 - 1 >= 0:
             if self.get_board(x2 - 1, y2) != "":
                 self._set_board(x2 - 1, y2, piece_moving)
@@ -166,7 +176,7 @@ class OrthokonBoard:
                 self._set_board(x2, y2 + 1, piece_moving)
 
     def _update_current_state(self):
-        """Checks victory conditions. if one player has no pieces or moves they lose."""
+        """Checks victory conditions. If one player has no pieces or moves they lose."""
 
         # Initialize variable for counting remaining pieces.
         red = 0
@@ -193,13 +203,22 @@ class OrthokonBoard:
             print("Something went wrong, Too many pieces on the board")
 
     def _moves_possible(self):
+        """Check if Red and Yellow have have moves. Updates current state if one of the players lost"""
+
+        # Initialize variables to track if a possible move is found
         red_has_moves = False
         yellow_has_moves = False
+
+        # Loop through every space on the board
         for x in range(4):
             for y in range(4):
-                if self.get_board(x, y) != "":
-                    player = self.get_board(x, y)
+                if self.get_board(x, y) != "":  # Blank spaces can't move
+                    player = self.get_board(x, y) # Store the player on the space for this loop cycle
+
+                    # checking in Clockwise order every direction is checked for possible moves for this space.
                     if self._check_move(x, y, x, y + 1):
+                        # Theres probably a Better way to do this with less copy paste.
+                        # If a move is found the appropriate tracking variable is updated.
                         if player == "Red":
                             red_has_moves = True
                         if player == "Yellow":
@@ -239,6 +258,8 @@ class OrthokonBoard:
                             red_has_moves = True
                         if player == "Yellow":
                             yellow_has_moves = True
+
+        # If red or yellow have no possible moves they lose
         if not red_has_moves:
             self._set_current_state("YELLOW_WON")
         if not yellow_has_moves:
