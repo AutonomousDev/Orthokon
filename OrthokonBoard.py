@@ -270,7 +270,7 @@ class OrthokonBoard:
 
 """
 Pay no attention to the test code commented out behind the curtain.
-"""
+
 game = OrthokonBoard()
 
 print(game.get_current_state())
@@ -278,7 +278,7 @@ print(game._debug_board())
 
 print(game.make_move(3, 0, 1, 0))
 
-"""
+
 print(game._debug_board())
 print(game.make_move(3, 1, 1, 1))
 print(game._debug_board())
