@@ -42,7 +42,7 @@ class OrthokonBoard:
         # Return debug mode status
         return self._debug
 
-    def make_move(self, y1, x1, x2, y2):
+    def make_move(self, y1, x1, y2, x2):
         """ Method named make_move that takes four parameters - the row and column (in that order) of the piece being
         moved, and the row and column (in that order) of the square it's being moved to. If the game has already been
         won, or if the move is not valid, make_move should just return False. Otherwise, it should record the move,
@@ -268,6 +268,6 @@ class OrthokonBoard:
 
 # game = OrthokonBoard()
 
-# print(game.make_move(0, 0, 0, ))
+# print(game.make_move(0, 0, 2, 0))
 # print(game.get_current_state())
 # print(game._debug_board())
