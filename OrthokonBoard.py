@@ -64,6 +64,7 @@ class OrthokonBoard:
 
         # Debug print the board
         if self.get_debug(): self._debug_board()
+        return True
 
     def _check_move(self, x1, y1, x2, y2):
         """ This Method Checks if moves are valid. x1, y1 is the starting position. x2, y2 is the ending position"""
