@@ -137,7 +137,7 @@ class OrthokonBoard:
             # Passed diagonal check
 
             # Check for clear path to destination
-            for delta in range(1, abs(delta_x)):
+            for delta in range(1, abs(delta_x)+1):
                 x = (direction_x * delta) + x1
                 y = (direction_y * delta) + y1
 
