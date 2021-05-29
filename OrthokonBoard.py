@@ -266,8 +266,3 @@ class OrthokonBoard:
             self._set_current_state("RED_WON")
 
 
-game = OrthokonBoard()
-
-print(game.make_move(1, 1, 1, 2))
-print(game.get_current_state())
-print(game._debug_board())
