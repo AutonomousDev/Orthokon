@@ -150,7 +150,7 @@ class OrthokonBoard:
         if self.get_debug(): print("Passed all _check_move tests")
         return True  # Passed all _check_move tests
 
-    def _record_move(self, x1, y1, x2, y2):
+    def _record_move(self, x1, y1, y2, x2):
         """Record the move on the board"""
         if self.get_debug(): print(self.get_board(x1, y1))
 
@@ -266,3 +266,8 @@ class OrthokonBoard:
             self._set_current_state("RED_WON")
 
 
+# game = OrthokonBoard()
+
+# print(game.make_move(0, 0, 0, ))
+# print(game.get_current_state())
+# print(game._debug_board())
