@@ -15,12 +15,8 @@ class OrthokonBoard:
         self._board = [["Red", "", "", "Yellow"], ["Red", "", "", "Yellow"], ["Red", "", "", "Yellow"],
                        ["Red", "", "", "Yellow"]]
 
-        self._current_state = "UNFINISHED"  # One of the three following values: "RED_WON", "YELLOW_WON", or "UNFINISHED"
-        self._debug = True
-
-    def _debug_board(self):
-        """debugging tool to print the board"""
-        print(self._board)
+        self._current_state = "UNFINISHED"  # One of the three following values: "RED_WON", "YELLOW_WON",
+        # or "UNFINISHED"
 
     def get_current_state(self):
         """returns the current state"""
@@ -36,12 +32,7 @@ class OrthokonBoard:
 
     def _set_board(self, x, y, player):
         """Sets a space on the board value"""
-        if self.get_debug(): print("Setting ", x, y, self._board[x][y], "as ", player)
         self._board[x][y] = player
-
-    def get_debug(self):
-        # Return debug mode status
-        return self._debug
 
     def make_move(self, y1, x1, y2, x2):
         """ Method named make_move that takes four parameters - the row and column (in that order) of the piece being
@@ -56,33 +47,24 @@ class OrthokonBoard:
             return False  # Game is over
 
         if not self._check_move(x1, y1, x2, y2):
-            if self.get_debug(): print("_check move returned false")
             return False  # The move isn't valid
 
         self._record_move(x1, y1, x2, y2)  # After passing the Valid test the board is updated with new piece positions
-
         self._update_current_state()  # The game checks to see if anyone won
-
-        # Debug print the board
-        if self.get_debug(): self._debug_board()
         return True
 
     def _check_move(self, x1, y1, x2, y2):
         """ This Method Checks if moves are valid. x1, y1 is the starting position. x2, y2 is the ending position"""
-        if self.get_debug(): print(self.get_board(x1, y1), "Is trying to move")
         # Check if a piece is at x1,y1
         if self.get_board(x1, y1) == "":
-            if self.get_debug(): print("No piece to move")
             return False  # "No piece to move"
 
         # Check if the move is on the board
         if x2 > 3 or x2 < 0 or y2 > 3 or y2 < 0:
-            if self.get_debug(): print("Move off board")
             return False  # Destinations can't leave the board
 
         # Check if a move really happened
         if x1 == x2 and y1 == y2:
-            if self.get_debug(): print("Did not move")
             return False  # Destination can't be the starting point
 
         # Calculate change in x and y
@@ -101,11 +83,6 @@ class OrthokonBoard:
         else:  # Dividing by zero isn't allowed
             direction_y = int(0)
 
-        if self.get_debug():  # Narrate whats happening for debugging
-            print("Moving from: ", x1, y1, "to: ", x2, y2)
-            print("delta_x: ", delta_x, "delta_y: ", delta_y, "direction_x: ", direction_x, "direction_y: ",
-                  direction_y)
-
         # Check for Horizontal moves
         if delta_y == 0:
             # Passed Horizontal move check
@@ -113,10 +90,8 @@ class OrthokonBoard:
             # Check for clear path to destination
             for x in range(x1 + direction_x, x2 + direction_x, direction_x):  # +direction_x ensures the starting
                 # position isn't included while the ending position is. Direction_x should be 1 or -1 in this IF tree.
-                if self.get_debug(): print(x, y1, "is", self.get_board(x, y1))
 
                 if self.get_board(x, y1) != "":  # If another piece is in the way, Return False
-                    if self.get_debug(): print("Horizontal move path blocked")
                     return False  # Horizontal move path blocked
 
         # Check for Vertical moves
@@ -126,10 +101,8 @@ class OrthokonBoard:
             # Check for clear path to destination
             for y in range(y1 + direction_y, y2 + direction_y, direction_y):  # +direction_y ensures the starting
                 # position isn't included while the ending position is. Direction_y should be 1 or -1 in this IF tree.
-                if self.get_debug(): print(x1, y, "is", self.get_board(x1, y))
 
                 if self.get_board(x1, y) != "":  # If another piece is in the way, Return False
-                    if self.get_debug(): print("Vertical move path blocked")
                     return False  # Vertical move path blocked
 
         # Check for diagonal moves
@@ -137,42 +110,35 @@ class OrthokonBoard:
             # Passed diagonal check
 
             # Check for clear path to destination
-            for delta in range(1, abs(delta_x)+1):
+            for delta in range(1, abs(delta_x) + 1):
                 x = (direction_x * delta) + x1
                 y = (direction_y * delta) + y1
 
-                if self.get_debug(): print(x, y, "is", self.get_board(x, y))
-
                 if self.get_board(x, y) != "":  # If another piece is in the way, Return False
-                    if self.get_debug(): print("Diagonal move path blocked")
                     return False  # Diagonal move path blocked
 
         else:
             # Illegal move, isn't horizontal, vertical or diagonal.
-            if self.get_debug(): print("Illegal move, isn't horizontal, vertical or diagonal.")
             return False  # Illegal move, isn't horizontal, vertical or diagonal.
 
         if not self._stop_check(direction_x, direction_y, x2, y2):
             return False  # Next space is open. Illegal move
 
-        if self.get_debug(): print("Passed all _check_move tests")
         return True  # Passed all _check_move tests
 
-    def _stop_check(self,direction_x, direction_y, x2, y2):
+    def _stop_check(self, direction_x, direction_y, x2, y2):
         """Checks to make sure the piece hit an edge or other piece"""
 
-        if x2 + direction_x >3 or x2 + direction_x < 0 or y2 +direction_y >3 or y2 +direction_x < 0:
+        if x2 + direction_x > 3 or x2 + direction_x < 0 or y2 + direction_y > 3 or y2 + direction_x < 0:
             return True  # Next space is off board. Legal stop
-        if self.get_board(x2+direction_x, y2+direction_y) == "":
+        if self.get_board(x2 + direction_x, y2 + direction_y) == "":
             return False  # Next space is open. Illegal move.
         return True  # Passes both stop tests
 
     def _record_move(self, x1, y1, x2, y2):
         """Record the move on the board"""
-        if self.get_debug(): print(self.get_board(x1, y1))
 
         piece_moving = self.get_board(x1, y1)
-        if self.get_debug(): print("Piece moving is: ", piece_moving)
 
         # Update the board with the new piece positions
         self._set_board(x2, y2, piece_moving)
@@ -281,25 +247,3 @@ class OrthokonBoard:
             self._set_current_state("YELLOW_WON")
         if not yellow_has_moves:
             self._set_current_state("RED_WON")
-
-
-"""
-Pay no attention to the test code commented out behind the curtain.
-
-game = OrthokonBoard()
-
-print(game.get_current_state())
-print(game._debug_board())
-
-print(game.make_move(3, 0, 1, 0))
-
-
-print(game._debug_board())
-print(game.make_move(3, 1, 1, 1))
-print(game._debug_board())
-print(game.make_move(3, 2, 1, 2))
-print(game._debug_board())
-print(game.make_move(3, 3, 1, 3))
-print(game._debug_board())
-print(game.get_current_state())
-"""
