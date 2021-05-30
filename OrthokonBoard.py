@@ -152,8 +152,20 @@ class OrthokonBoard:
             if self.get_debug(): print("Illegal move, isn't horizontal, vertical or diagonal.")
             return False  # Illegal move, isn't horizontal, vertical or diagonal.
 
+        if not self._stop_check(direction_x, direction_y, x2, y2):
+            return False  # Next space is open. Illegal move
+
         if self.get_debug(): print("Passed all _check_move tests")
         return True  # Passed all _check_move tests
+
+    def _stop_check(self,direction_x, direction_y, x2, y2):
+        """Checks to make sure the piece hit an edge or other piece"""
+
+        if x2 + direction_x >3 or x2 + direction_x < 0 or y2 +direction_y >3 or y2 +direction_x < 0:
+            return True  # Next space is off board. Legal stop
+        if self.get_board(x2+direction_x, y2+direction_y) == "":
+            return False  # Next space is open. Illegal move.
+        return True  # Passes both stop tests
 
     def _record_move(self, x1, y1, x2, y2):
         """Record the move on the board"""
